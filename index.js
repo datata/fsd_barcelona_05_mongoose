@@ -1,14 +1,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
+
+const port = process.env.PORT || 4000;
 
 //routes
 app.get('/', (req, res) =>{
     return res.send('Bienevenidos a mi aplicacion de tareas');
 });
 
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+//connection to mongodb
+mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     console.log('Connection stablished');
 })
@@ -16,6 +20,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
     console.log('Error connecting to MongoDB', error);
 });
 
-app.listen(3000, () => {
-    console.log('Server is running');
+app.listen(port, () => {
+    console.log('Server is running: ' + port);
 });
