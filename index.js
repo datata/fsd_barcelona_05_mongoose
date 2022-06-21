@@ -7,6 +7,16 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 //routes
+app.get('/users', (req, res) => {
+    return res.status(200).json(
+        {
+            success: true,
+            message: 'Get all users retrieved succsessfully'
+        }
+    );
+})
+
+
 app.get('/', (req, res) => {
     return res.send('Bienevenidos a mi aplicacion de tareas');
 });
