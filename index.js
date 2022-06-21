@@ -30,6 +30,15 @@ app.get('/users', async (req, res) => {
     }
 });
 
+app.post('/users', (req, res) => {
+    return res.status(200).json(
+        {
+            succes: true,
+            message: 'Create user successfully'
+        }
+    )
+});
+
 
 app.get('/', (req, res) => {
     return res.send('Bienevenidos a mi aplicacion de tareas');
