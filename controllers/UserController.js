@@ -43,7 +43,7 @@ userController.createUser = async (req, res) => {
         // }
 
         const newUser = {
-            name, 
+            name,
             email,
             password
         };
@@ -64,6 +64,29 @@ userController.createUser = async (req, res) => {
                 error: error?.message || error
             }
         )
+    }
+};
+
+userController.getUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const user = await User.findById(id);
+
+        return res.status(200).json(
+            {
+                success: true,
+                message: "User found",
+                data: user
+            }
+        );
+    } catch (error) {
+        return res.status(200).json(
+            {
+                success: false,
+                message: "Error finding user"
+            }
+        );
     }
 };
 
