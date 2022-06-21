@@ -5,6 +5,9 @@ const User = require('./models/User');
 
 const app = express();
 
+//middleware
+app.use(express.json());
+
 const port = process.env.PORT || 4000;
 
 //routes
@@ -30,15 +33,48 @@ app.get('/users', async (req, res) => {
     }
 });
 
-app.post('/users', (req, res) => {
-    return res.status(200).json(
-        {
-            succes: true,
-            message: 'Create user successfully'
-        }
-    )
-});
+app.post('/users', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
 
+        // const name = req.body.name;
+        // const email = req.body.email;
+        // const password = req.body.password;
+
+        // PASSWORD CODE VALIDATION
+        // if(password.length < 6) {
+        //     return res.status(500).json(
+        //         {
+        //             success: false,
+        //             message: 'Password is shorter than 6 characters'
+        //         }
+        //     )
+        // }
+
+        const newUser = {
+            name, 
+            email,
+            password
+        };
+
+        await User.create(newUser);
+
+        return res.status(200).json(
+            {
+                success: true,
+                message: 'Create user successfully'
+            }
+        )
+    } catch (error) {
+        return res.status(500).json(
+            {
+                success: false,
+                message: 'Error creating user',
+                error: error?.message || error
+            }
+        )
+    }
+});
 
 app.get('/', (req, res) => {
     return res.send('Bienevenidos a mi aplicacion de tareas');
