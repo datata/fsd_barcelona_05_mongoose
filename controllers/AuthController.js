@@ -16,14 +16,14 @@ authController.register = async (req, res) => {
         // const password = req.body.password;
 
         // PASSWORD CODE VALIDATION
-        // if(password.length < 6) {
-        //     return res.status(500).json(
-        //         {
-        //             success: false,
-        //             message: 'Password is shorter than 6 characters'
-        //         }
-        //     )
-        // }
+        if(password.length < 6 || password.length > 10) {
+            return res.status(500).json(
+                {
+                    success: false,
+                    message: 'Password is shorter than 6 characters'
+                }
+            )
+        };
 
         const newUser = {
             name,
