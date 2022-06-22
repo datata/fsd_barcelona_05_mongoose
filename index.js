@@ -1,7 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const db = require('./config/database');
-const userRoutes = require('./routes/user.routes')
+const userRoutes = require('./routes/user.routes');
 
 const app = express();
 
@@ -12,6 +12,8 @@ const port = process.env.PORT || 4000;
 
 //routes
 app.use('/api', userRoutes);
+// Otra manera de importar routes
+app.use('/api', require('./routes/auth.routes'))
 
 app.get('/', (req, res) => {
     return res.send('Bienevenidos a mi aplicacion de tareas');
@@ -30,4 +32,3 @@ db()
     .catch((error) => {
         console.log("Error Connecting to mongoDB", error);
     });
-    
