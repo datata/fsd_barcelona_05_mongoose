@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require('bcrypt');
+const router = require("../routes/user.routes");
 
 const authController = {};
 
@@ -49,5 +50,14 @@ authController.register = async (req, res) => {
         )
     }
 };
+
+authController.login = (req, res) => {
+    return res.status(200).json(
+        {
+            success: true,
+            message: 'User Logged'
+        }
+    );
+}
 
 module.exports = authController;
