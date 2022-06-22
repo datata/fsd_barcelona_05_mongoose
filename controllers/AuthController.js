@@ -17,7 +17,7 @@ authController.register = async (req, res) => {
         // const password = req.body.password;
 
         // PASSWORD CODE VALIDATION
-        if(password.length < 6 || password.length > 10) {
+        if (password.length < 6 || password.length > 10) {
             return res.status(500).json(
                 {
                     success: false,
@@ -51,13 +51,56 @@ authController.register = async (req, res) => {
     }
 };
 
-authController.login = (req, res) => {
-    return res.status(200).json(
-        {
-            success: true,
-            message: 'User Logged'
-        }
-    );
+authController.login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        //Validación de lo que me llega por body
+        if(!email || !password) {
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: 'Email and password are required'
+                }
+            ); 
+        };
+
+        const user = await User.findOne({email: email});
+        
+        if(!user) {
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: 'Bad Credentials'
+                }
+            );  
+        };  
+        
+        const isValidPassword = bcrypt.compareSync(password, user.password);
+
+        if(!isValidPassword) {
+            return res.status(401).json(
+                {
+                    success: false,
+                    message: 'Bad Credentials'
+                }
+            );  
+        };
+
+        return res.status(200).json(
+            {
+                success: true,
+                message: 'User Logged'
+            }
+        );
+    } catch (error) {
+        return res.status(500).json(
+            {
+                success: false,
+                message: 'User Login failed'
+            }
+        );
+    }
 }
 
 module.exports = authController;
