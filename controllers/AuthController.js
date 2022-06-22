@@ -1,10 +1,15 @@
 const User = require("../models/User");
+const bcrypt = require('bcrypt');
 
 const authController = {};
 
 authController.register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
+
+        // codificar password
+        const salt = await bcrypt.genSalt(10);
+        const encryptedPassword = await bcrypt.hash(password, salt);
 
         // const name = req.body.name;
         // const email = req.body.email;
@@ -23,7 +28,7 @@ authController.register = async (req, res) => {
         const newUser = {
             name,
             email,
-            password
+            password: encryptedPassword
         };
 
         await User.create(newUser);
