@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require('bcrypt');
-const router = require("../routes/user.routes");
+const jwt = require('jsonwebtoken');
 
 const authController = {};
 
@@ -87,10 +87,13 @@ authController.login = async (req, res) => {
             );  
         };
 
+        const token = jwt.sign({user_id : user._id, user_role: user.role}, process.env.JWT_SECRET, { expiresIn: '5h' });
+
         return res.status(200).json(
             {
                 success: true,
-                message: 'User Logged'
+                message: 'User Logged',
+                token: token
             }
         );
     } catch (error) {
